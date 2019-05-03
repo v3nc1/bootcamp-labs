@@ -1,25 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { LabItemsPresenter } from "./components/LabItemPresenter";
+import { LabSolutionPresenter } from "./components/LabSolutionPresenter";
+import "./App.css";
+import labs from "./labs";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-function App() {
+const Home = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {labs.jsBasic.map(e => (
+        <LabItemsPresenter {...e} route={`/jsBasic/${e.solution.id}`} />
+      ))}
     </div>
+  );
+};
+function App() {
+  console.log({ labs });
+  return (
+    <Router>
+      <Route exact path="/" component={Home} />
+
+      {labs.jsBasic.map(e => {
+        console.log({ e });
+        const path = `/jsBasic/${e.solution.id}`;
+        console.log(path);
+        return (
+          <Route
+            exact
+            path={path}
+            component={() => <LabSolutionPresenter {...e} />}
+          />
+        );
+      })}
+    </Router>
   );
 }
 
