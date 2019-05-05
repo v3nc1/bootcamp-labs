@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 const Syntax = styled(SyntaxHighlighter)`
   width: 100%;
   margin: 2px;
@@ -10,8 +9,10 @@ const Syntax = styled(SyntaxHighlighter)`
 const TabContentContainer = styled.div`
   border: solid silver;
   border-width: 0px 1px 1px 1px;
+  background-color: white;
   flex: 1;
   display: flex;
+  overflow-y: auto;
 `;
 const TabHeaderContainer = styled.div`
   border: solid silver;
@@ -30,9 +31,12 @@ const TabHeaderButton = styled.button`
 `;
 const ConsoleLineContainer = styled.div``;
 const Container = styled.div`
+  background-color: whitesmoke;
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding-left: 40px;
+  padding-right: 40px;
 `;
 
 const TaskDescriptionContainer = styled.div`
@@ -66,17 +70,29 @@ export const LabSolutionPresenter = props => {
   const [outputLines, setOutputLines] = useState([]);
 
   const { solution, code } = props;
-  console.log({ solution });
+
   const runSolution = useCallback(() => {
-    const newLines = ["Running case"];
-    setOutputLines(newLines);
-    solution.testCases.forEach(element => {
-      solution.solution(element, value => {
-        newLines.push(value);
+    const newLines = [];
+
+    const output = {
+      write: (value, style) => {
+        newLines.push({ value, style });
         setOutputLines([...newLines]);
+      },
+      clear: () => {
+        setOutputLines([]);
+      }
+    };
+
+    setOutputLines(newLines);
+    if (solution.testCases && solution.testCases.length > 0) {
+      solution.testCases.forEach(element => {
+        solution.solution(element, output);
       });
-    });
-  }, []);
+    } else {
+      solution.solution("", output);
+    }
+  }, [solution]);
 
   useEffect(() => {
     runSolution();
@@ -108,7 +124,7 @@ export const LabSolutionPresenter = props => {
 
                 <OutputContainer>
                   {outputLines.map(e => (
-                    <ConsoleLine lineText={e} />
+                    <ConsoleLine lineText={e.value} style={e.style} />
                   ))}
                 </OutputContainer>
               </div>
@@ -173,6 +189,6 @@ const TabHeaderItem = ({ title, onClick, isSelected }) => {
     </TabHeaderButton>
   );
 };
-const ConsoleLine = ({ lineText }) => (
-  <ConsoleLineContainer>{lineText}</ConsoleLineContainer>
+const ConsoleLine = ({ lineText, style }) => (
+  <ConsoleLineContainer style={style}>{lineText}</ConsoleLineContainer>
 );
