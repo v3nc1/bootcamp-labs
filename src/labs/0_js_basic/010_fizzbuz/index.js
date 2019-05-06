@@ -7,13 +7,7 @@ This Lab Exercise has no input
 `;
 
 function solution(input, output) {
-  for (var i = 1; i <= 100; i++) {
-    var out = "";
-    if (i % 3 === 0) out = out + "Fiz";
-    if (i % 5 === 0) out = out + "Buzz";
-    if (out === "") out = i;
-    output(out);
-  }
+  
 }
 
 export default { id: "010_fizzBuzz", task, solution };
