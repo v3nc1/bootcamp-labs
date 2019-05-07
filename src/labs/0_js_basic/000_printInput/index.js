@@ -10,7 +10,9 @@ var i=0;
 /**The solution! */
 function solution(input, output) {
 
-  
+    if(i===3){
+      i=0
+    }
     output.write(input,{color:colors[i]});
     i++;
     

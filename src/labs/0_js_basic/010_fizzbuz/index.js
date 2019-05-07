@@ -7,6 +7,24 @@ This Lab Exercise has no input
 `;
 
 function solution(input, output) {
+
+    for(var i=1;i<=100;i++){
+
+        if(i%3===0&&i%5===0){
+            
+            output.write("FizzBuzzss");
+        }
+        else if(i%3===0){
+            output.write("Fizz");
+            
+        }else  if(i%5===0){
+            output.write("Buzz");
+            
+        }else{
+            output.write(i);
+            
+        }
+    }
   
 }
 
