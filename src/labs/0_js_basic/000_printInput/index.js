@@ -5,12 +5,14 @@ Not a trick question, this is just a warmup, just return what you receive in the
 
 /**the test case inputs */
 var testCases = ["Hello", "World", "From zadar bootcamp"];
-
+var colors=["red","white","blue"];
+var i=0;
 /**The solution! */
 function solution(input, output) {
 
   
-    output.write(input,{color:'blue'})
+    output.write(input,{color:colors[i]});
+    i++;
     
 }
 
